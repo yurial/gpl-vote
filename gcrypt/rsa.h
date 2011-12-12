@@ -5,26 +5,55 @@
 #include <stdint.h>
 #include <gcrypt.h>
 
-#include <iostream>
+//#include <iostream>
+#include <stdexcept>
 
 #include "ext/array.h"
+#include "gcrypt/hash.h"
 
 namespace gcrypt
 {
 namespace rsa
 {
 
-template <size_t keysize>
-class pub
+void fingerprint(const gcry_sexp_t& key, int algo, void* dst, size_t size) throw(std::runtime_error,std::invalid_argument);
+
+class key_t
 {
 protected:
 gcry_sexp_t m_key;
 
 public:
+inline  operator gcry_sexp_t& ()
+    {
+    return m_key;
+    }
+
+inline operator const gcry_sexp_t& () const
+    {
+    return m_key;
+    }
+template <int algo>
+inline void fingerprint(hash::hash_t<algo>& hash) const throw(std::runtime_error,std::invalid_argument)
+    {
+    const gcry_sexp_t& key( m_key );
+    size_t size = sizeof(typename hash::hash_t<algo>::type) * hash.size();
+    rsa::fingerprint( key, algo, (void*)( &hash ), size );
+    }
+};
+
+template <size_t keysize>
+class pub_t:
+    public key_t
+{
+protected:
+using key_t::m_key;
+
+public:
 typedef unsigned int    e_t;
 
-template <class T>
-inline      pub(const ext::array<T,keysize/8/sizeof(T)>& n, const e_t& e)
+template <class n_t>
+inline      pub_t(const n_t& n, const e_t& e)
     {
     gcry_mpi_t  mpi_n;
     gcry_error_t err;
@@ -40,24 +69,14 @@ inline      pub(const ext::array<T,keysize/8/sizeof(T)>& n, const e_t& e)
         }
     gcry_mpi_release( mpi_n );
     }
-inline      ~pub()
+inline      ~pub_t()
     {
     gcry_sexp_release( m_key );
     }
-
-inline void dump() const
-    {
-    size_t size = gcry_sexp_sprint( m_key, GCRYSEXP_FMT_DEFAULT, NULL, 0 );
-    char* buff = new char [ size ];
-    //gcry_sexp_sprint( m_key, GCRYSEXP_FMT_DEFAULT, buff, size );
-    //gcry_sexp_sprint( m_key, GCRYSEXP_FMT_CANON, buff, size );
-    gcry_sexp_sprint( m_key, GCRYSEXP_FMT_ADVANCED, buff, size );
-    std::cout << buff << std::endl;
-    delete[] buff;
-    }
 };
 
-class priv
+class priv_t:
+    public key_t
 {
 
 };
