@@ -1,0 +1,64 @@
+#ifndef CRYPT_RSAH
+#define CRYPT_RSAH
+
+#include <stddef.h>
+#include <stdint.h>
+#include <gcrypt.h>
+
+#include <iostream>
+
+#include "ext/array.h"
+
+namespace gcrypt
+{
+namespace rsa
+{
+
+struct RSA_public_key
+{
+gcry_mpi_t n;       /* modulus */
+gcry_mpi_t e;       /* exponent */
+};
+
+struct RSA_secret_key:
+    public RSA_public_key
+{
+gcry_mpi_t d;       /* exponent */
+gcry_mpi_t p;       /* prime  p. */
+gcry_mpi_t q;       /* prime  q. */
+gcry_mpi_t u;       /* inverse of p mod q. */
+};
+
+template <size_t keysize>
+class pub:
+    protected RSA_public_key
+{
+};
+
+template <size_t keysize>
+class key:
+    protected RSA_secret_key
+{
+public:
+        key() throw(exception);
+void    generate(bool secure, e_t use_e) throw(exception);
+void    generate(bool secure) throw(exception);
+
+bool    test();
+bool    good() const throw();
+bool    good_strong() const throw();
+
+void    encrypt() throw(exception) const;
+void    decrypt() throw(exception) const;
+
+void    sign() throw() const;
+
+inline  operator pub ();
+inline  operator const pub () const;
+};
+
+} //namespace rsa
+} //namespace crypt
+
+#endif
+
