@@ -1,16 +1,16 @@
-.PHONY: all test clean distclean mostyclean realclean
-VPATH=sys:net
-OBJ:=unix_main.o
-
 ARLIBS=sys.a net.a cmn.a gcrypt.a
+VPATH=sys:net
+OBJ:=unix_main.o version.o
+
+.PHONY: all test clean distclean mostyclean realclean ${ARLIBS}
 
 all: gpl-vote
 clean:
-	make -C sys clean
-	make -C net clean
-	make -C cmn clean
-	make -C gcrypt clean
-	make -C test clean
+	make -s -C sys  clean
+	make -s -C net  clean
+	make -s -C cmn  clean
+	make -s -C gcrypt clean
+	make -s -C test clean
 	rm -f *.o
 	rm -f gpl-vote ${OBJ}
 
@@ -20,14 +20,14 @@ distclean: clean
 mostlyclean: distclean
 realclean: distclean
 
-gpl-vote: ${OBJ} sys.a net.a cmn.a version.o
-	${CXX} ${CXXFLAGS} ${LDFLAGS} ${LIBS} $? -o $@
+gpl-vote: ${OBJ} ${ARLIBS}
+	${CXX} ${OBJ} ${ARLIBS} ${CXXFLAGS} ${LDFLAGS} ${LIBS} $? -o $@
 
 version.o: version.cpp info.sh
 	$(CXX) $(CXXFLAGS) -D__INFO__="\"`sh info.sh -n`\"" -c -o $@ $<
 
-%.a: $(ARLIBS:%.a=%/*.cpp) $(ARLIBS:%.a=%/*.h) $(ARLIBS:%.a=%/*.inc) 
-	make -C $(@:%.a=%) ../$@
+${ARLIBS}:
+	make -s -C $(@:%.a=%) ../$@
 
 test: $(ARLIBS)
 	make -C test
