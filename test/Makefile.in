@@ -1,6 +1,10 @@
-.PHONY: clean
+.PHONY: all clean distclean mostyclean realclean
 
-BUILD=hash fingerprint
+BUILD=\
+mem\
+hash\
+fingerprint\
+
 CXXFLAGS+=-I.. @LIBGCRYPT_CFLAGS@
 LDLIBS+=@LIBGCRYPT_LIBS@ ../gcrypt.a
 
@@ -9,5 +13,14 @@ all: $(BUILD)
 clean:
 	rm -f $(BUILD)
 
+distclean: clean
+	rm -f Makefile
+
+mostlyclean: distclean
+realclean: distclean
+
+mem: mem.cpp
+
 fingerprint: ../gcrypt.a
+
 
