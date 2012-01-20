@@ -18,6 +18,12 @@ namespace rsa
 
 void fingerprint(const gcry_sexp_t& key, int algo, void* dst, size_t size) throw(std::runtime_error,std::invalid_argument);
 
+template <int algo, class T, int size>
+inline void fingerprint(const gcry_sexp_t& key, hash::hash_t<algo,T,size>& hash)
+{
+fingerprint( key, algo, &hash, hash::hash_t<algo,T,size>::static_size );
+}
+
 class key_t
 {
 protected:
@@ -36,8 +42,7 @@ inline operator const gcry_sexp_t& () const
 template <int algo, class T, int size>
 inline void fingerprint(hash::hash_t<algo,T,size>& hash) const throw(std::runtime_error,std::invalid_argument)
     {
-    const gcry_sexp_t& key( m_key );
-    rsa::fingerprint( key, algo, (void*)( &hash ), size * sizeof(T) );
+    rsa::fingerprint( m_key, hash );
     }
 };
 
