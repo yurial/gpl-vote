@@ -12,100 +12,12 @@ namespace gcrypt
 namespace hash
 {
 
-template <int md_algo>
-struct hash_t
+template <int md_algo, class T, int md_size>
+struct hash_t:
+    public ext::array<T,md_size>
 {
-};
-
-template <>
-struct hash_t<GCRY_MD_RMD160>:
-    public ext::array<uint32_t,5>
-{
-enum { algo = GCRY_MD_RMD160 };
-};
-
-template <>
-struct hash_t<GCRY_MD_TIGER>:
-    public ext::array<size_t,24/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_TIGER };
-};
-
-template <>
-struct hash_t<GCRY_MD_TIGER1>:
-    public ext::array<size_t,24/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_TIGER1 };
-};
-
-template <>
-struct hash_t<GCRY_MD_TIGER2>:
-    public ext::array<size_t,24/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_TIGER2 };
-};
-
-template <>
-struct hash_t<GCRY_MD_HAVAL>:
-    public ext::array<uint32_t,5>
-{
-enum { algo = GCRY_MD_HAVAL };
-};
-
-template <>
-struct hash_t<GCRY_MD_MD2>:
-    public ext::array<size_t,16/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_MD2 };
-};
-
-template <>
-struct hash_t<GCRY_MD_MD4>:
-    public ext::array<size_t,16/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_MD4 };
-};
-
-template <>
-struct hash_t<GCRY_MD_MD5>:
-    public ext::array<size_t,16/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_MD5 };
-};
-
-template <>
-struct hash_t<GCRY_MD_SHA1>:
-    public ext::array<uint32_t,5>
-{
-enum { algo = GCRY_MD_SHA1 };
-};
-
-template <>
-struct hash_t<GCRY_MD_SHA224>:
-    public ext::array<uint32_t,7>
-{
-enum { algo = GCRY_MD_SHA224 };
-};
-
-template <>
-struct hash_t<GCRY_MD_SHA256>:
-    public ext::array<size_t,32/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_SHA256 };
-};
-
-template <>
-struct hash_t<GCRY_MD_SHA384>:
-    public ext::array<size_t,48/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_SHA384 };
-};
-
-template <>
-struct hash_t<GCRY_MD_SHA512>:
-    public ext::array<size_t,64/sizeof(size_t)>
-{
-enum { algo = GCRY_MD_SHA512 };
+enum { algo = md_algo };
+enum { static_size = md_size*sizeof(T) };
 };
 
 struct make
@@ -144,8 +56,8 @@ inline void reset() throw()
     {
     gcry_md_reset( m_md );
     }
-template <int algo>
-inline void enable(const hash_t<algo>& hash) throw(std::invalid_argument)
+template <int algo,class T, int size>
+inline void enable(const hash_t<algo,T,size>& hash) throw(std::invalid_argument)
     {
     enable( algo );
     }
@@ -162,10 +74,10 @@ inline void write(const void* data, size_t size) throw()
     gcry_md_write( m_md, data, size );
     }
 
-template <int algo>
-inline void read(hash_t<algo>& hash) const throw(std::logic_error)
+template <int algo, class T, int size>
+inline void read(hash_t<algo,T,size>& hash) const throw(std::logic_error)
     {
-    read( algo, &hash, hash.size() * sizeof(typename hash_t<algo>::type) );
+    read( algo, &hash, size*sizeof(T) );
     }
 inline void read(int algo, void* dst, size_t size) const throw(std::logic_error)
     {
@@ -178,27 +90,27 @@ inline void read(int algo, void* dst, size_t size) const throw(std::logic_error)
     }
 };
 
-typedef hash_t<GCRY_MD_RMD160>  rmd160;
-typedef hash_t<GCRY_MD_TIGER>   tiger_t;
-typedef hash_t<GCRY_MD_TIGER1>  tiger1_t;
-typedef hash_t<GCRY_MD_TIGER2>  tiger2_t;
-typedef hash_t<GCRY_MD_HAVAL>   haval_t;
+typedef hash_t<GCRY_MD_RMD160,uint32_t,5>                   rmd160;
+typedef hash_t<GCRY_MD_TIGER,size_t,24/sizeof(size_t)>      tiger_t;
+typedef hash_t<GCRY_MD_TIGER1,size_t,24/sizeof(size_t)>     tiger1_t;
+typedef hash_t<GCRY_MD_TIGER2,size_t,24/sizeof(size_t)>     tiger2_t;
+typedef hash_t<GCRY_MD_HAVAL,uint32_t,5>                    haval_t;
 
-typedef hash_t<GCRY_MD_MD2>     md2_t;
-typedef hash_t<GCRY_MD_MD4>     md4_t;
-typedef hash_t<GCRY_MD_MD5>     md5_t;
+typedef hash_t<GCRY_MD_MD2,size_t,16/sizeof(size_t)>        md2_t;
+typedef hash_t<GCRY_MD_MD4,size_t,16/sizeof(size_t)>        md4_t;
+typedef hash_t<GCRY_MD_MD5,size_t,16/sizeof(size_t)>        md5_t;
 
-typedef hash_t<GCRY_MD_SHA1>    sha1_t;
-typedef hash_t<GCRY_MD_SHA224>  sha224_t;
-typedef hash_t<GCRY_MD_SHA256>  sha256_t;
-typedef hash_t<GCRY_MD_SHA384>  sha384_t;
-typedef hash_t<GCRY_MD_SHA512>  sha512_t;
+typedef hash_t<GCRY_MD_SHA1,uint32_t,5>                     sha1_t;
+typedef hash_t<GCRY_MD_SHA224,uint32_t,7>                   sha224_t;
+typedef hash_t<GCRY_MD_SHA256,size_t,32/sizeof(size_t)>     sha256_t;
+typedef hash_t<GCRY_MD_SHA384,size_t,48/sizeof(size_t)>     sha384_t;
+typedef hash_t<GCRY_MD_SHA512,size_t,64/sizeof(size_t)>     sha512_t;
 
-typedef hash_t<GCRY_MD_CRC32>           crc32_t;
-typedef hash_t<GCRY_MD_CRC32_RFC1510>   crc32_rfc1510_t;
-typedef hash_t<GCRY_MD_CRC24_RFC2440>   crc24_rfc2440_t;
+typedef hash_t<GCRY_MD_CRC32,uint32_t,1>                    crc32_t;
+typedef hash_t<GCRY_MD_CRC32_RFC1510,uint32_t,1>            crc32_rfc1510_t;
+typedef hash_t<GCRY_MD_CRC24_RFC2440,uint32_t,1>            crc24_rfc2440_t;
 
-typedef hash_t<GCRY_MD_WHIRLPOOL>       whirlpool_t;
+typedef hash_t<GCRY_MD_WHIRLPOOL,size_t,64/sizeof(size_t)>  whirlpool_t;
 
 } //namespace hash
 } //namespace gcrypt

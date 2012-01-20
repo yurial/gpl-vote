@@ -33,12 +33,11 @@ inline operator const gcry_sexp_t& () const
     {
     return m_key;
     }
-template <int algo>
-inline void fingerprint(hash::hash_t<algo>& hash) const throw(std::runtime_error,std::invalid_argument)
+template <int algo, class T, int size>
+inline void fingerprint(hash::hash_t<algo,T,size>& hash) const throw(std::runtime_error,std::invalid_argument)
     {
     const gcry_sexp_t& key( m_key );
-    size_t size = sizeof(typename hash::hash_t<algo>::type) * hash.size();
-    rsa::fingerprint( key, algo, (void*)( &hash ), size );
+    rsa::fingerprint( key, algo, (void*)( &hash ), size * sizeof(T) );
     }
 };
 
