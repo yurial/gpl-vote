@@ -4,6 +4,7 @@ BUILD=\
 mem\
 hash\
 fingerprint\
+mpi\
 
 CXXFLAGS+=-I.. @LIBGCRYPT_CFLAGS@
 LDLIBS+=@LIBGCRYPT_LIBS@ ../gcrypt.a
