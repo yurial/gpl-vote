@@ -29,6 +29,12 @@ gcry_mpi_release( m_mpi );
 }
 
 template <bool secure>
+void mpi_template<secure>::dump() const
+{
+gcry_mpi_dump( m_mpi );
+}
+
+template <bool secure>
 mpi_template<secure>& mpi_template<secure>::operator = (const mpi_template<secure>& rvalue)
 {
 m_mpi = gcry_mpi_set( m_mpi, rvalue.m_mpi );

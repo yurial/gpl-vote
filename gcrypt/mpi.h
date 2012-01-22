@@ -18,6 +18,8 @@ inline          mpi_template(unsigned int nbits);
 inline          mpi_template(const mpi_template& origin);
 inline          ~mpi_template();
 
+inline  void    dump() const;
+
 mpi_template&   operator = (const mpi_template& rvalue);
 mpi_template&   operator = (const unsigned long rvalue);
 
