@@ -14,6 +14,9 @@ gcry_sexp_t m_sexp;
 public:
 inline          sexp_t();
 inline          ~sexp_t();
+
+inline  void    dump() const;
+
 //new
 //create
 //sscan
