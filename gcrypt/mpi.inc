@@ -54,6 +54,13 @@ gcry_mpi_sqap( m_mpi, rvalue.m_mpi );
 }
 
 template <bool secure>
+mpi_template<secure>& mpi_template<secure>::scan(enum gcry_mpi_format format, const unsigned char* buff, size_t size, size_t* nscanned)
+{
+gcry_error_t err = gcry_mpi_scan( &m_mpi, format, buff, size, nscanned );
+//TODO: throw
+}
+
+template <bool secure>
 mpi_template<secure>::operator gcry_mpi_t& ()
 {
 return m_mpi;

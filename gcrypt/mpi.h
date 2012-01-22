@@ -24,6 +24,7 @@ mpi_template&   operator = (const mpi_template& rvalue);
 mpi_template&   operator = (const unsigned long rvalue);
 
 mpi_template&   swap(mpi_template& rvalue);
+mpi_template&   scan(enum gcry_mpi_format format, const unsigned char* buff, size_t size, size_t* nscanned);
 
                 operator gcry_mpi_t& ();
                 operator const gcry_mpi_t& () const;
