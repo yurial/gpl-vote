@@ -18,7 +18,7 @@ sexp_t::operator gcry_sexp_t& ()
 return m_sexp;
 }
 
-sexp_t::operator const gcry_sexp_t& ()
+sexp_t::operator const gcry_sexp_t& () const
 {
 return m_sexp;
 }
@@ -28,7 +28,7 @@ sexp_t::operator gcry_sexp_t* ()
 return &m_sexp;
 }
 
-sexp_t::operator const gcry_sexp_t* ()
+sexp_t::operator const gcry_sexp_t* () const
 {
 return &m_sexp;
 }

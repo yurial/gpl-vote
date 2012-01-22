@@ -22,10 +22,10 @@ inline  void    dump() const;
 //sscan
 
 inline          operator gcry_sexp_t& ();
-inline          operator const gcry_sexp_t& ();
+inline          operator const gcry_sexp_t& () const;
 
 inline          operator gcry_sexp_t* ();
-inline          operator const gcry_sexp_t* ();
+inline          operator const gcry_sexp_t* () const;
 };
 
 #include "sexp.inc"
