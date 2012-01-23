@@ -6,6 +6,7 @@ hash\
 fingerprint\
 mpi\
 sexp\
+exception\
 
 CXXFLAGS+=-I.. @LIBGCRYPT_CFLAGS@
 LDLIBS+=@LIBGCRYPT_LIBS@ ../gcrypt.a
