@@ -5,7 +5,7 @@ mem\
 hash\
 fingerprint\
 mpi\
-sexpt\
+sexp\
 
 CXXFLAGS+=-I.. @LIBGCRYPT_CFLAGS@
 LDLIBS+=@LIBGCRYPT_LIBS@ ../gcrypt.a
