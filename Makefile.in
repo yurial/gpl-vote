@@ -21,7 +21,7 @@ mostlyclean: distclean
 realclean: distclean
 
 gpl-vote: ${OBJ} ${ARLIBS}
-	${CXX} ${OBJ} ${ARLIBS} ${CXXFLAGS} ${LDFLAGS} ${LIBS} $? -o $@
+	${CXX} ${OBJ} ${ARLIBS} ${CXXFLAGS} ${LDFLAGS} ${LIBS} -o $@
 
 version.o: version.cpp info.sh
 	$(CXX) $(CXXFLAGS) -D__INFO__="\"`sh info.sh -n`\"" -c -o $@ $<
