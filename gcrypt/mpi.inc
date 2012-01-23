@@ -61,6 +61,18 @@ gcry_error_t err = gcry_mpi_scan( &m_mpi, format, buff, size, nscanned );
 }
 
 template <bool secure>
+gcry_mpi_t& mpi_template<secure>::native()
+{
+return m_mpi;
+}
+
+template <bool secure>
+const gcry_mpi_t& mpi_template<secure>::native() const
+{
+return m_mpi;
+}
+
+template <bool secure>
 mpi_template<secure>::operator gcry_mpi_t& ()
 {
 return m_mpi;
