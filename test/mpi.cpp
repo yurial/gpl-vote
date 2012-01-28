@@ -10,6 +10,7 @@ n.dump();
 mpi_t e( 8 );
 e = 47;
 e.dump();
+gcry_mpi_t& native = e.native();
 
 return 0;
 }
