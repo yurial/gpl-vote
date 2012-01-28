@@ -2,7 +2,7 @@
 #define GCRYPT_EXCEPTIONH
 
 #include <exception>
-#include <gcrypt.h>
+#include "error.h"
 
 namespace gcrypt
 {
@@ -15,7 +15,7 @@ gcry_error_t        m_error;
 
 public:
 inline              exception() throw();
-inline              exception(const gcry_error_t& err) throw();
+inline              exception(const error_t& err) throw();
 inline              exception(const exception& origin) throw();
 inline              ~exception() throw();
 inline  exception&  operator = (const exception& rvalue) throw();
