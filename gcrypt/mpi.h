@@ -28,8 +28,6 @@ mpi_template&       scan(enum gcry_mpi_format format, const unsigned char* buff,
 
 gcry_mpi_t&         native();
 const gcry_mpi_t&   native() const;
-                    operator gcry_mpi_t& ();
-                    operator const gcry_mpi_t& () const;
 };
 
 typedef mpi_template<false> mpi_t;

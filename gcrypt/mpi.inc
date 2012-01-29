@@ -72,15 +72,3 @@ const gcry_mpi_t& mpi_template<secure>::native() const
 return m_mpi;
 }
 
-template <bool secure>
-mpi_template<secure>::operator gcry_mpi_t& ()
-{
-return m_mpi;
-}
-
-template <bool secure>
-mpi_template<secure>::operator const gcry_mpi_t& () const
-{
-return m_mpi;
-}
-
