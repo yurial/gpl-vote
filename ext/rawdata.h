@@ -1,16 +1,13 @@
 #ifndef EXT_RAWDATAH
 #define EXT_RAWDATAH
 
-#include "idata.h"
-
 namespace ext
 {
 
-class rawdata:
-    virtual public idata
+class rawdata
 {
 public:
-typedef     idata::const_iterator const_iterator;
+typedef     const char* const_iterator;
 
 protected:
 char*       m_begin;
@@ -32,7 +29,7 @@ inline      bool        operator != (const rawdata& rvalue) const;
 };
 
 class const_rawdata:
-    virtual public rawdata
+    public rawdata
 {
 public:
 typedef     rawdata::const_iterator const_iterator;

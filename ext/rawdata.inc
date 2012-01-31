@@ -3,15 +3,13 @@
 namespace ext
 {
 
-rawdata::rawdata():
-    idata()
+rawdata::rawdata()
 {
 m_begin = NULL;
 m_size = 0;
 }
 
-rawdata::rawdata(const char* begin, size_t size):
-    idata()
+rawdata::rawdata(const char* begin, size_t size)
 {
 m_begin = (char*)begin;
 m_size = size;
@@ -67,12 +65,12 @@ return !operator == ( rvalue );
 }
 
 const_rawdata::const_rawdata():
-    idata(), rawdata()
+    rawdata()
 {
 }
 
 const_rawdata::const_rawdata(const char* begin, size_t size):
-    idata(), rawdata( begin, size )
+    rawdata( begin, size )
 {
 }
 
