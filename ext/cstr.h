@@ -1,21 +1,20 @@
 #ifndef EXT_CSTRH
 #define EXT_CSTRH
 
-#include "istring.h"
 #include "rawdata.h"
 
 namespace ext
 {
 
 class c_str:
-    virtual public rawdata,
-    public istring
+    public rawdata
 {
 public:
 typedef rawdata::const_iterator const_iterator;
 
 protected:
 inline  c_str();
+inline  c_str(const char* str, size_t size);
 
 public:
 using   rawdata::begin;
@@ -25,8 +24,6 @@ using   rawdata::size;
 inline  c_str(const char* str);
 inline  operator const char*() const;
 };
-
-
 
 class const_c_str:
     public c_str,
