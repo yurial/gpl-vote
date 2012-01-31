@@ -24,7 +24,7 @@ inline              operator unsigned short() const;
 inline              operator unsigned long() const;
 };
 
-#include "cstrtoint.inc"
+#include "strtoint.inc"
 
 #endif
 
