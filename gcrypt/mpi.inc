@@ -1,5 +1,5 @@
 template <bool secure>
-mpi_template<secure>::mpi_template():
+mpi_template<secure>::mpi_template() throw():
     m_mpi( NULL )
 {
 }
@@ -10,16 +10,27 @@ mpi_template<secure>::mpi_template(const mpi_template<secure>::native_t& native)
 {
 }
 
-
-
 template <bool secure>
-mpi_template<secure>::mpi_template(const mpi_template<secure>& origin)
+mpi_template<secure>::mpi_template(const mpi_template<secure>& origin) throw()
 {
 m_mpi = gcry_mpi_copy( origin.m_mpi );
 }
 
 template <bool secure>
-mpi_template<secure>::~mpi_template()
+mpi_template<secure>::mpi_template(const unsigned char* buff, size_t size) throw(exception)
+{
+scan( GCRYMPI_FMT_USG, buff, size, NULL );
+}
+
+template <bool secure>
+template <class T>
+mpi_template<secure>::mpi_template(const T& buff) throw(exception)
+{
+scan( GCRYMPI_FMT_USG, buff.begin(), buff.size(), NULL );
+}
+
+template <bool secure>
+mpi_template<secure>::~mpi_template() throw()
 {
 gcry_mpi_release( m_mpi );
 }
@@ -50,10 +61,13 @@ gcry_mpi_sqap( m_mpi, rvalue.m_mpi );
 }
 
 template <bool secure>
-mpi_template<secure>& mpi_template<secure>::scan(enum gcry_mpi_format format, const unsigned char* buff, size_t size, size_t* nscanned)
+mpi_template<secure>& mpi_template<secure>::scan(enum gcry_mpi_format format, const unsigned char* buff, size_t size, size_t* nscanned) throw(exception)
 {
 gcry_error_t err = gcry_mpi_scan( &m_mpi, format, buff, size, nscanned );
-//TODO: throw
+if ( GPG_ERR_NO_ERROR != err )
+    {
+    throw exception( err );
+    }
 }
 
 template <bool secure>

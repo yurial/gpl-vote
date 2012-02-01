@@ -4,13 +4,13 @@ namespace gcrypt
 {
 
 template <>
-mpi_template<false>::mpi_template(unsigned int nbits)
+mpi_template<false>::mpi_template(unsigned int nbits) throw()
 {
 m_mpi = gcry_mpi_new( nbits );
 }
 
 template <>
-mpi_template<true>::mpi_template(unsigned int nbits)
+mpi_template<true>::mpi_template(unsigned int nbits) throw()
 {
 m_mpi = gcry_mpi_snew( nbits );
 }
