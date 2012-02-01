@@ -17,7 +17,7 @@ native_t            m_mpi;
 
 public:
 inline              mpi_template();
-inline              mpi_template(unsigned int nbits);
+                    mpi_template(unsigned int nbits); //no inline because bug with multiple definition
 inline              mpi_template(const mpi_template& origin);
 inline              ~mpi_template();
 
