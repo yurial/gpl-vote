@@ -9,8 +9,11 @@ namespace gcrypt
 template <bool secure>
 class mpi_template
 {
+public:
+typedef gcry_mpi_t  native_t;
+
 protected:
-gcry_mpi_t          m_mpi;
+native_t            m_mpi;
 
 public:
 inline              mpi_template();
@@ -26,8 +29,8 @@ mpi_template&       operator = (const unsigned long rvalue);
 mpi_template&       swap(mpi_template& rvalue);
 mpi_template&       scan(enum gcry_mpi_format format, const unsigned char* buff, size_t size, size_t* nscanned);
 
-gcry_mpi_t&         native();
-const gcry_mpi_t&   native() const;
+native_t&           native();
+const native_t&     native() const;
 };
 
 typedef mpi_template<false> mpi_t;

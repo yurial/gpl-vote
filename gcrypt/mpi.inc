@@ -4,6 +4,12 @@ mpi_template<secure>::mpi_template():
 {
 }
 
+template <bool secure>
+mpi_template<secure>::mpi_template(const mpi_template<secure>::native_t& native) throw():
+    m_mpi( native )
+{
+}
+
 template <>
 mpi_template<false>::mpi_template(unsigned int nbits)
 {
@@ -61,13 +67,13 @@ gcry_error_t err = gcry_mpi_scan( &m_mpi, format, buff, size, nscanned );
 }
 
 template <bool secure>
-gcry_mpi_t& mpi_template<secure>::native()
+typename mpi_template<secure>::native_t& mpi_template<secure>::native()
 {
 return m_mpi;
 }
 
 template <bool secure>
-const gcry_mpi_t& mpi_template<secure>::native() const
+const typename mpi_template<secure>::native_t& mpi_template<secure>::native() const
 {
 return m_mpi;
 }
