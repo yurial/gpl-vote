@@ -6,6 +6,7 @@
 #include <gcrypt.h>
 
 #include "ext/array.h"
+#include "ext/rawdata.h"
 
 namespace gcrypt
 {
@@ -68,6 +69,10 @@ inline void enable(int algo) throw(std::invalid_argument)
         {
         throw std::invalid_argument( "gcry_md_enable() unknown md algo" );
         }
+    }
+inline void write(const ext::rawdata& data) throw()
+    {
+    gcry_md_write( m_md, data.begin(), data.size() );
     }
 inline void write(const void* data, size_t size) throw()
     {
