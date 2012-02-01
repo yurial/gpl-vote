@@ -24,11 +24,14 @@ fprintf( stdout, "\n" );
 int main()
 {
 using namespace gcrypt;
+using namespace asymmetric;
 init( 16*1024 );
-ext::array<char,128> buff;
+ext::array<unsigned char,128> buff;
 buff.fill( 0xFF );
 
-rsa::pub_t<1024> key( buff, 3U );
+rsa::pub_t::n_t n( buff );
+rsa::pub_t::e_t e( 65537 );
+rsa::pub_t key( n, e );
 
 hash::sha256_t hash;
 key.fingerprint( hash );

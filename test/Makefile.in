@@ -24,6 +24,6 @@ realclean: distclean
 
 mem: mem.cpp
 
-fingerprint: ../gcrypt.a
+fingerprint:
 
 
