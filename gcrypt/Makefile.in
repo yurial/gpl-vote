@@ -1,5 +1,7 @@
 .PHONY: all clean distclean mostyclean realclean
-OBJ:=mpi.o rsa.o
+OBJ:=mpi.o\
+sexp.o\
+rsa.o\
 
 CXXFLAGS+=-I..
 
