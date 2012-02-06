@@ -47,6 +47,9 @@ inline  const mpi_t     mpi(int index, int mpifmt = GCRYMPI_FMT_USG) const throw
 
 inline  native_t&       native() throw();
 inline  const native_t& native() const throw();
+
+static  sexp_t          build(const char* fmt, ...) throw (std::pair<exception,size_t>);
+
 };
 
 #include "sexp.inc"
