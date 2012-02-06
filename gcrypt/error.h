@@ -8,6 +8,7 @@ namespace gcrypt
 {
 
 typedef gcry_error_t error_t;
+enum { noerr = GPG_ERR_NO_ERROR };
 
 } //namespace gcrypt
 
