@@ -7,6 +7,9 @@ namespace ext
 template <class T>
 class move
 {
+private:
+inline  explicit    move(const move<T>&) throw();
+
 protected:
 T&          m_obj;
 
