@@ -4,6 +4,8 @@ OBJ:=unix_main.o version.o
 
 .PHONY: all test clean distclean mostyclean realclean ${ARLIBS}
 
+CXXFLAGS+=@CXXFLAGS@
+
 all: gpl-vote
 clean:
 	make -s -C sys  clean

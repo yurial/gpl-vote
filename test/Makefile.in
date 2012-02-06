@@ -8,7 +8,7 @@ mpi\
 sexp\
 exception\
 
-CXXFLAGS+=-I.. @LIBGCRYPT_CFLAGS@
+CXXFLAGS+=@CXXFLAGS@ -I.. @LIBGCRYPT_CFLAGS@
 LDLIBS+=@LIBGCRYPT_LIBS@ ../gcrypt.a
 
 all: $(BUILD)

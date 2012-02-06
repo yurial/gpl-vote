@@ -1,6 +1,8 @@
 .PHONY: all clean distclean mostyclean realclean
 OBJ:=pugixml.o
 
+CXXFLAGS+=@CXXFLAGS@
+
 all: ../cmn.a
 ../cmn.a: ${OBJ}
 	ar r ../cmn.a ${OBJ}

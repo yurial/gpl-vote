@@ -3,7 +3,7 @@ OBJ:=mpi.o\
 sexp.o\
 rsa.o\
 
-CXXFLAGS+=-I..
+CXXFLAGS+=@CXXFLAGS@ -I..
 
 all: ../gcrypt.a
 ../gcrypt.a: ${OBJ}

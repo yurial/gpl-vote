@@ -1,6 +1,8 @@
 .PHONY: all clean distclean mostyclean realclean
 OBJ:=test.o cfg.o
 
+CXXFLAGS+=@CXXFLAGS@
+
 all: ../net.a
 ../net.a: ${OBJ}
 	ar r ../net.a ${OBJ}
