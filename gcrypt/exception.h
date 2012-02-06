@@ -24,6 +24,8 @@ inline  const char* error() const throw();
 inline  const char* source() const throw();
 };
 
+inline  void        throwif(error_t err) throw(exception);
+
 #include "exception.inc"
 
 } //namespace gcrypt

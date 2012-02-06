@@ -1,5 +1,5 @@
 exception::exception() throw():
-    m_error( GPG_ERR_NO_ERROR )
+    m_error( noerr )
 {
 }
 
@@ -36,5 +36,11 @@ return gcry_strerror( m_error );
 const char* exception::source() const throw()
 {
 return gcry_strsource( m_error );
+}
+
+void throwif(error_t err) throw(exception)
+{
+if ( noerr != err )
+    throw exception( err );
 }
 
