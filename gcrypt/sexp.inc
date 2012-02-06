@@ -3,14 +3,40 @@ sexp_t::sexp_t() throw():
 {
 }
 
-sexp_t::sexp_t(const native_t& native) throw():
-    m_sexp( native )
+sexp_t::sexp_t(const ext::move<native_t>& origin) throw():
+    m_sexp( origin.obj() )
 {
+origin.obj() = NULL;
+}
+
+sexp_t::sexp_t(const sexp_t& origin) throw(std::pair<exception,size_t>):
+    m_sexp( NULL )
+{
+operator = ( origin );
 }
 
 sexp_t::~sexp_t() throw()
 {
+clear();
+}
+
+void sexp_t::clear() throw()
+{
 gcry_sexp_release( m_sexp );
+m_sexp = NULL;
+}
+
+sexp_t& sexp_t::operator = (const sexp_t& origin) throw()
+{
+clear();
+operator = ( ext::move<sexp_t>( build( "%S", origin.native() ) ) );
+}
+
+sexp_t& sexp_t::operator = (const ext::move<sexp_t>& origin) throw()
+{
+clear();
+m_sexp = ext::move<native_t>( origin.obj().native() );
+origin.obj().native() = NULL;
 }
 
 void sexp_t::dump() const throw()
@@ -20,22 +46,22 @@ gcry_sexp_dump( m_sexp );
 
 sexp_t sexp_t::find(const token_t& token) const throw()
 {
-return sexp_t( gcry_sexp_find_token( m_sexp, token.begin(), token.size() ) );
+return sexp_t( ext::move<native_t>( gcry_sexp_find_token( m_sexp, token.begin(), token.size() ) ) );
 }
 
 sexp_t sexp_t::token(int index) const throw()
 {
-return sexp_t( gcry_sexp_nth( m_sexp, index ) );
+return sexp_t( ext::move<native_t>( gcry_sexp_nth( m_sexp, index ) ) );
 }
 
 sexp_t sexp_t::head() const throw()
 {
-return sexp_t( gcry_sexp_car( m_sexp ) );
+return sexp_t( ext::move<native_t>( gcry_sexp_car( m_sexp ) ) );
 }
 
 sexp_t sexp_t::tail() const throw()
 {
-return sexp_t( gcry_sexp_cdr( m_sexp ) );
+return sexp_t( ext::move<native_t>( gcry_sexp_cdr( m_sexp ) ) );
 }
 
 int sexp_t::size() const throw()

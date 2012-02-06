@@ -3,6 +3,7 @@
 
 #include <string>
 #include <gcrypt.h>
+#include "ext/move.h"
 #include "ext/rawdata.h"
 #include "ext/cstr.h"
 #include "exception.h"
@@ -23,15 +24,16 @@ typedef ext::c_str      token_t;
 protected:
 native_t        m_sexp;
 
-inline          sexp_t(const native_t& native) throw();
+inline          sexp_t(const ext::move<native_t>& origin) throw();
 
 public:
 inline          sexp_t() throw();
+inline          sexp_t(const sexp_t& origin) throw(std::pair<exception,size_t>);
 inline          ~sexp_t() throw();
+inline  void    clear() throw();
 
-//new
-//create
-//sscan
+inline  sexp_t& operator = (const sexp_t& origin) throw();
+inline  sexp_t& operator = (const ext::move<sexp_t>& origin) throw();
 
 inline  void    dump() const throw();
 
@@ -49,6 +51,9 @@ inline  native_t&       native() throw();
 inline  const native_t& native() const throw();
 
 static  sexp_t          build(const char* fmt, ...) throw (std::pair<exception,size_t>);
+//new
+//create
+//sscan
 
 };
 
