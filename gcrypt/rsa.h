@@ -25,7 +25,7 @@ typedef mpi_t           n_t;
 typedef unsigned long   e_t;
 
 protected:
-                pub_t();
+inline          pub_t(const ext::move<native_t>& key);
 void            fingerprint(int algo, void* dst, size_t size) const throw(exception);
 
 public:
@@ -44,12 +44,25 @@ public:
 typedef smpi_t      p_t;
 typedef smpi_t      q_t;
 
+protected:
+inline          priv_t(const ext::move<native_t>& key);
+
 public:
-    priv_t(const p_t& p, const q_t& q);
+                priv_t(const e_t& e, const p_t& p, const q_t& q);
 static priv_t   generate(int nbits = 2048, const e_t& e = 1, bool transistent = false) throw (exception);
 };
 
 //inc
+priv_t::priv_t(const ext::move<native_t>& key):
+    pub_t( key )
+{
+}
+
+pub_t::pub_t(const ext::move<native_t>& key):
+    key_t( key )
+{
+}
+
 pub_t::id_t pub_t::fingerprint() const throw(exception)
 {
 id_t result;
