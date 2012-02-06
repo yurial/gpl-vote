@@ -1,26 +1,24 @@
+#include <stdio.h>
+#include "gcrypt/init.h"
 #include "gcrypt/rsa.h"
+
+void mylog(void* data, int, const char* fmt, va_list args)
+{
+vfprintf( stderr, fmt, args );
+}
 
 int main()
 {
-/* Version check should be the very first call because it
- * makes sure that important subsystems are intialized. */
-if (!gcry_check_version (GCRYPT_VERSION))
-    {
-    std::cerr << "libgcrypt version mismatch" << std::endl;
-    exit (2);
-    }
-/* Disable secure memory. */
-gcry_control (GCRYCTL_DISABLE_SECMEM, 0);
-/* ... If required, other initialization goes here.
- * Tell Libgcrypt that initialization has completed. */
-gcry_control (GCRYCTL_INITIALIZATION_FINISHED, 0);
-
 using namespace gcrypt;
-ext::array<char,128> buff;
-buff.fill( 0xFF );
+using namespace asymmetric;
 
-rsa::pub<1024> key( buff, 3U );
-key.dump();
+gcry_set_log_handler( mylog, NULL );
+gcry_control( GCRYCTL_SET_VERBOSITY, 1 );
+gcry_control( GCRYCTL_SET_DEBUG_FLAGS, 1 );
+init( 1024 * 1024 );
+gcry_set_log_handler( mylog, NULL );
+rsa::priv_t key = rsa::priv_t::generate( 32768 );
+key.native().dump();
 return 0;
 }
 
