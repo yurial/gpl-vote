@@ -14,8 +14,14 @@ typedef sexp_t sign_t;
 
 class key_t
 {
+public:
+typedef sexp_t  native_t;
+
 protected:
-sexp_t  m_key;
+native_t        m_key;
+
+inline          key_t();
+inline          key_t(const native_t& key);
 
 public:
 unsigned int    nbits() const;
@@ -53,6 +59,15 @@ sexp_t  encrypt(const sexp_t data);
 };
 
 //inc
+key_t::key_t()
+{
+}
+
+key_t::key_t(const native_t& key):
+    m_key( key )
+{
+}
+
 sexp_t& key_t::native()
 {
 return m_key;
