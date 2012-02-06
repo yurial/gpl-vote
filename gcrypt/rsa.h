@@ -46,6 +46,7 @@ typedef smpi_t      q_t;
 
 public:
     priv_t(const p_t& p, const q_t& q);
+static priv_t   generate(int nbits = 2048, const e_t& e = 1, bool transistent = false) throw (exception);
 };
 
 //inc
